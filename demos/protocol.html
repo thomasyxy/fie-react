@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link rel="shortcut icon" href="//cdn.leoao.com/ico/favicon.ico">
+    <link rel="icon" href="//cdn.leoao.com/ico/favicon.ico" type="image/vnd.microsoft.icon">
+    <link rel="stylesheet" type="text/css" href="//cdn.leoao.com/font/v2/iconfont.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/weui/0.4.3/style/weui.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/jquery-weui/0.8.0/css/jquery-weui.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ asset('dist/css/index.css') }}">
+    <meta name="format-detection" content="telephone=no">
+    <title>乐刻服务协议</title>
+</head>
+
+<body>
+  <div id="container"></div>
+
+  <script id="template" type="x-tmpl-mustache">
+    <div class="leui-content weui-row weui-no-gutter">
+      <div class="leui-left-nav weui-col-33">
+        <div class="weui_cells">
+          @{{#col}}
+          <div class="weui_cell switch-tab action" data-target=@{{id}}>
+              <div class="weui_cell_bd weui_cell_primary">
+                  <p class="leui-font-size-md">@{{protocol}}</p>
+              </div>
+          </div>
+          @{{/col}}
+        </div>
+      </div>
+      @{{#col}}
+      <div class="leui-right-content weui-col-66">
+          <article class="weui-article" id=@{{id}}>
+              <section>
+                  <h2 class="title">@{{protocol}}</h2>
+                  @{{#content}}
+                  <section>
+                      <h3>@{{title}}</h3>
+                      @{{#section}}
+                      <p>@{{text}}</p>
+                      @{{/section}}
+                  </section>
+                  @{{/content}}
+              </section>
+          </article>
+      </div>
+      @{{/col}}
+    </div>
+  </script>
+  <script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/jquery-weui/0.8.0/js/jquery-weui.min.js"></script>
+  <script src="https://cdn.bootcss.com/mustache.js/2.3.0/mustache.min.js"></script>
+  <script type="text/javascript">
+    var protocolData = {
+      col: [
+        {
+          protocol: '乐刻会员连续包月服务协议',
+          id: 'article-card',
+          content: [
+            {
+              title: '1. 服务条款的接受与修改',
+              section: [
+                {
+                  text: '	本协议是乐刻会员与杭州乐刻网络技术有限公司（下称“乐刻”）之间关于乐刻会员使用乐刻提供的自动续费委托扣款服务（下称“本服务”）所订立的协议，本协议描述乐刻与乐刻会员之间关于本服务的使用及相关方面的权利义务。本协议构成乐刻会员（无论个人或者单位）使用乐刻所提供的本服务之先决条件，除非乐刻会员接受本协议条款，否则乐刻会员无权使用本服务，乐刻会员选择使用本服务行为将视为同意接受本协议各项条款的约束。'
+                }
+              ]
+            },
+            {
+              title: '2. 服务说明',
+              section: [
+                {
+                  text: '2.1 本服务是出于乐刻会员对于自动续费的需求，在乐刻会员已开通本服务的前提下，乐刻会员不可撤销的授权乐刻在乐刻会员有效期即将过期时，自行或委托第三方支付渠道从乐刻会员账号绑定的第三方支付账户、银行卡、通信账户（以下统称“账户”）中扣取下一个计费周期包月费。'
+                },
+                {
+                  text: '2.2 自动续费具体指，基于2.1的前提，乐刻自行或委托第三方支付渠道通过上述账户收取乐刻会员下一计费周期包月费，并将款项记入乐刻会员支付记录，同时相应延长乐刻会员对应权益有效期的扣费方式。乐刻会员需保证乐刻可以自行或委托第三方支付渠道从上述账户扣款成功，因上述账户中可扣款余额不足导致的续费失败，由乐刻会员自行承担责任（包括但不限于乐刻会员对应权益终止）。'
+                },
+                {
+                  text: '	2.3 乐刻会员选择第三方支付渠道享受本服务，将视为同意乐刻代理乐刻会员向第三方支付渠道发出扣款指令，并同意第三方支付渠道可以根据乐刻发出的扣款指令，在不验证会员账户密码、支付密码、短信校验码等信息的情况下从上述账户扣划下一个计费周期的包月费。'
+                },
+                {
+                  text: '	2.4 乐刻会员在享受本服务时，应同时遵循《乐视服务协议》以及相关平台规则。乐刻会员选择使用本服务行为将视为同意接受本服务的服务条款以及乐刻针对本服务发出的各类公告、通知。'
+                },
+                {
+                  text: '	2.5 乐刻向乐刻会员提供的本服务仅限于延续乐刻会员相应权益使用，任何以恶意破解等非法手段将乐刻提供的本服务内容与乐刻会员相应权益分离的行为，均不属于本协议中约定的本服务。由此引起的一切法律后果由行为人负责，乐刻将依法追究行为人的法律责任。'
+                },
+                {
+                  text: '	2.6 乐刻会员在服务期内若有任何疑问可致电专属客服：4001501866答疑、解决服务相关问题。'
+                }
+              ]
+            },
+            {
+              title: '3. 有效期',
+              section: [
+                {
+                  text: '除非乐刻另有通知、公告，本服务将长期有效。本协议自乐刻会员选择接受或使用本服务后生效，直至乐刻会员终止本服务或乐刻会员资格注销时终止。'
+                }
+              ]
+            },
+            {
+              title: '4. 服务的退订',
+              section: [
+                {
+                  text: '	4.1 乐刻会员有权随时终止本服务。'
+                },
+                {
+                  text: '	4.2 支付宝退订流程：打开手机支付宝，依次进入“我的”-“设置”-“支付设置”-“自动扣款”，选择对应的乐刻服务进行退订。'
+                }
+              ]
+            },
+            {
+              title: '5. 退费的限制',
+              section: [
+                {
+                  text: '5.1 乐刻基于本服务在乐刻会员开通自动续费服务时选择的支付方式下所扣划的费用，不以任何方式对乐刻会员所支付的费用予以退还。'
+                },
+                {
+                  text: '	5.2 如在扣费过程中出现差错，乐刻和乐刻会员应密切配合查明原因，各自承担己方过错造成的损失；若因双方各自存在不均等过错造成的损失，由双方按过错的程度承担相应责任；双方共负责任的，由双方均摊责任。'
+                }
+              ]
+            },
+            {
+              title: '6. 通知与查询',
+              section: [
+                {
+                  text: '	6.1 本服务由乐刻会员自主选择是否取消，若乐刻会员未选择取消，则视为乐刻会员同意乐刻按照一定规则进行定期的扣款尝试，一旦扣款成功，乐刻将为乐刻会员开通下一个计费周期的包月服务。'
+                },
+                {
+                  text: '	6.2 若在自动续费时/之前，乐刻包月服务价格发生调整，如调整后的价格低于调整前的价格，则以调整后的价格为准；如调整后的价格高于调整前的价格，则仍以调整前的价格为准。'
+                },
+                {
+                  text: '	6.3 乐刻可根据其业务开展或技术升级等情况变更或修改本协议的有关服务内容、规则及条款，乐刻在做出上述变更或修改前，将在乐刻相关页面上公告修改的内容，但无义务另行做个别通知。如果乐刻会员不同意本协议的修改，可以取消已经获取的服务并停止使用；如果乐刻会员继续使用乐刻提供的服务，则视为乐刻会员已经接受本协议的全部修改。'
+                }
+              ]
+            },
+            {
+              title: '7. 协议终止',
+              section: [
+                {
+                  text: '	出现下列情况之一的，乐刻有权立即终止本服务而无需承担任何责任：（1）乐刻会员违反本协议的约定的；（2）乐刻会员违反乐刻或乐刻关联公司关于乐刻会员服务的乐刻会员协议及各类公告、通知的；（3）乐刻认为向乐刻会员提供本服务存在重大风险的。'
+                }
+              ]
+            },
+            {
+              title: '8. 法律的适用',
+              section: [
+                {
+                  text: '	本协议的生效、履行、解释及争议的解决均适用中华人民共和国法律，本协议条款因与中华人民共和国现行法律相抵触而导致部分无效，不影响其他部分的效力。'
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    };
+
+    function loadUser() {
+      var template = $('#template').html();
+      Mustache.parse(template);   // optional, speeds up future uses
+      var rendered = Mustache.render(template, protocolData);
+      $('#container').html(rendered);
+    }
+
+    loadUser()
+
+    $(function() {
+        $('.leui-right-content .weui-article').hide();
+        $('.leui-right-content #article-card').show();
+    })
+    $('.switch-tab').click(function() {
+        $('.switch-tab').removeClass('action');
+        $('.leui-right-content .weui-article').hide();
+        $(this).addClass('action');
+        var id = $(this).data('target');
+        $('#' + id).scrollTop(0);
+        $('#' + id).show();
+    })
+  </script>
+</body>
+
+</html>

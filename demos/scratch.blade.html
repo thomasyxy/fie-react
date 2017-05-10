@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <title>刮刮卡活动</title>
+    <link rel="shortcut icon" href="http://cdn.leoao.com/ico/v2/favicon.ico">
+    <link rel="icon" href="http://cdn.leoao.com/ico/v2/favicon.ico" type="image/vnd.microsoft.icon">
+    <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_6or9f4jlz5jnhfr.css">
+    <script src="//at.alicdn.com/t/font_70i8304e57yqr529.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/weui/0.4.3/style/weui.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/jquery-weui/0.8.0/css/jquery-weui.min.css">
+    <link rel='stylesheet' href='/front/stylesheets/common.css' />
+    <link rel="stylesheet" type="text/css" href="/front/stylesheets/scratch.css">
+  </head>
+<body>
+  <div class="main-container" id="scratchCard">
+    <!-- <img class="title-img" src="http://cdn.leoao.com/img/scratch-top-11-26.png"> -->
+    <!-- <li><a class="btn" href="lefit://ondealappnative?action=14007&city_id=1&card_id=1&card_item_id=90">购卡界面</a></li> -->
+    <header id="header">
+      <div class=tit>
+        <!-- <p>每周末上团操课,每天得<span>一次</span>刮奖机会</p> -->
+        <!-- <p>一周完成<span>4节</span>私教课,即可直接获得私教会员礼品</p> -->
+      </div>
+      <!-- 用户头像 -->
+      <!-- div class="user_header" v-show="userInfo.imgSrc">
+        <img  :src="userInfo.imgSrc" alt="">
+      </div>
+      <h3>@{{userInfo.name}}</h3> -->
+    </header>
+    <section class="person">
+      <div class="tit">
+        <h4>一周私教课</h4>
+        <p>1周（@{{getCurDate}}）</p>
+        <p>上满4节私教课，奖励<b>【15天会员时长】</b></p>
+      </div>
+      <ul v-cloak class="sign-list">
+        <li :class="[list.state==='已完成'?'sign':list.state==='已预约'?'order':'']" v-for="list in person">
+          <i></i>
+          <div class="content">
+            <p>@{{list.dateString?list.dateString:'继续加油'}}<r/p>
+            <p>@{{list.state}}</p>
+          </div>
+        </li>
+        <li class="award" :class="pAwardOpen">
+          <i></i>
+        </li>
+      </ul>
+      <a class="draw" :class="pAwardClassObj" href="#" @click.prevent="getPersonDraw">领取奖品</a>
+    </section>
+    <section class="group">
+      <div class="tit">
+        <h4>周末上操课 一起刮刮乐</h4>
+        <p>每周末上操课,领最高<b>99元现金券</b>,100%中奖！</p>
+      </div>
+      <ul v-cloak class="sign-list">
+        <li v-for="list in group" :class="[list.state==='已完成'?'sign':list.state==='已预约'?'order':'']">
+          <i></i>
+          <div class="content">
+            <p>@{{list.dateString}}<r/p>
+            <p>@{{list.state=='已完成'?'完成':list.state=='已预约'?'已预约':'继续加油'}}</p>
+          </div>
+          <!-- <p>@{{list.dateString}}</p>
+          <p>@{{list.state}}</p> -->
+        </li>
+      </ul>
+    </section>
+
+
+    <div id="main-wrap" class="canvas-wrap">
+      <canvas id="js_lottery" class="card-container"></canvas>
+      <button  class="button-begin" :class="awardClassObj" @click.prevent="getGroupDraw">点我刮奖</button>
+      <!-- <a href="lefit://ondealappnative?action=14007&city_id=1&card_id=1&card_item_id=90" v-if="!scratchIng" v-show="count <= 0" class="button-begin">去购买</a> -->
+      <div class="cover-layer"></div>
+    </div>
+    <!-- <div class="main-title">根据您在活动期间的下单记录</div> -->
+    <div class="card-content">
+      本周末还剩 <span class="times-scratch" v-cloak>@{{gCount}}次</span> 刮奖机会
+    </div>
+    <div class="card-footer">
+      <a href="javascript:;" class="detail-more" @click="openRule">
+        <span class="titleMoreLeft">详细规则说明</span>
+        <img class="imageRule" src="http://cdn.leoao.com/guagualeicon_rule.png" alt="image of rule details">
+      </a>
+      <a class="change-addr">
+        <img class="imageAddr" src="http://cdn.leoao.com/guagualeicon_darw_record.png" alt="image of change address">
+        <span class="titleMoreRight" @click="openRecord">抽奖记录</span>
+      </a>
+    </div>
+    <!-- 详细规则说明 -->
+    <div id="scratch-rule" class="weui-popup-container">
+      <div class="weui-popup-overlay"></div>
+      <div class="weui-popup-modal">
+        <!-- <img src="http://cdn.leoao.com/img/pt-banner.jpg" width="100%;"> -->
+        <div class="le-rule-content">
+          <h3>活动细则：</h3>
+          <p>1、活动范围：全国乐刻门店；</p>
+          <p>2、本活动仅限在APP内领奖/抽奖，约课、签到在微信/APP均可；</p>
+          <p>3、严禁出现只签到不上课的作弊行为，一经发现，取消活动资格；</p>
+          </br>
+          <h3>4、私教活动细则：</h3>
+          <p>a. 活动以“周”（周一至周日）为单位，每周完成4节私教课并准时签到，即可获得对应的奖品；</p>
+          <p>b. 1周内完成4次私教课签到后，7天内在本活动页面点击“领取奖品”按钮，即可领奖，在中奖记录可以查询；</p>
+          <p>c. 本次私教活动持续4周，每周一更新当周上课奖励，以本页面发布为准；</p>
+          </br/>
+          <h3>5、操课活动细则：</h3>
+          <p>a. 参与条件：每周六、日签到一节操课，即得1次刮奖机会，每天最多得1次刮奖机会；</p>
+          <p>b. 每次刮奖机会仅限当周有效，周日24点失效；</p>
+          <p>c. 奖品包含：2-99元不等的会员卡现金券、20-50元不等的私教现金券、乐刻防水运动背包等；</p>
+          <p>d. 现金券奖品将实时发放到中奖会员的账户中；实物奖品在填写收货地址后7个工作日内寄出；</p>
+
+        </div>
+      </div>
+    </div>
+    <div id="rule_close" class="button_sp_area">
+      <a @click="closePopup" href="javascript:;" @click.prevnet="closePopup" class="weui_btn weui_btn_plain_default">确定</a>
+    </div>
+    <!-- 地址编辑 -->
+    <div id="scratch-address" class="weui-popup-container">
+      <div class="weui-popup-overlay"></div>
+      <div class="weui-popup-modal">
+        <div class="le-rule-content">
+          <p class="le-popup-title">收货地址</p>
+          <div class="weui_cells weui_cells_form">
+            <div class="weui_cell">
+              <div class="weui_cell_hd"><label for="name" class="weui_label">收货称呼</label></div>
+              <div class="weui_cell_bd weui_cell_primary">
+                <input class="weui_input" type="text" v-model="address.consignee" placeholder="请填写收货姓名">
+              </div>
+            </div>
+            <div class="weui_cell">
+              <div class="weui_cell_hd"><label for="name" class="weui_label">联系电话</label></div>
+              <div class="weui_cell_bd weui_cell_primary">
+                <input class="weui_input" type="rel" v-model="address.mobile" placeholder="请填写联系电话">
+              </div>
+            </div>
+            <div class="weui_cell">
+              <div class="weui_cell_hd"><label for="name" class="weui_label">收货城市</label></div>
+              <div class="weui_cell_bd weui_cell_primary">
+                <input class="weui_input" id="address-province" type="text" readonly="" v-model="cityText"  placeholder="请选取收货城市">
+              </div>
+            </div>
+            <div class="weui_cell">
+              <div class="weui_cell_hd"><label for="date" class="weui_label">具体地址</label></div>
+              <div class="weui_cell_bd weui_cell_primary">
+                <input class="weui_input" type="text" v-model="address.village" placeholder="请填写具体地址">
+              </div>
+            </div>
+          </div>
+          </br/>
+          <div class="button_sp_area">
+            <a @click="addAddress" v-if="!cityText" href="javascript:;" class="weui_btn weui_btn_plain_default">确定</a>
+            <a @click="closePopup" v-if="!cityText" href="javascript:;" class="weui_btn weui_btn_plain_default">关闭</a>
+            <a @click="editAddress" v-if="cityText" href="javascript:;" class="weui_btn weui_btn_plain_default">修改</a>
+            <a @click="closePopup" v-if="cityText" href="javascript:;" class="weui_btn weui_btn_plain_default">确定</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div v-show="!lotteryPopupShow" class="le-mask" style="display: none;"></div> -->
+    <!-- 抽中大奖 -->
+    <div id="winning" class="weui-popup-container" v-show="!lotteryPopupShow" transition="fade" style="display: none;">
+      <div class="weui-popup-overlay">
+        <div class="weui-popup-modal" >
+        <!-- 内容部分 -->
+          <img :src="award.image"
+              v-bind:style="{width:award.type==0?'1.37rem':'3.15rem',marginTop:award.type!=1?'.7rem':'0'}"
+           alt="">
+          <!-- <img :src="getAwardImg" alt=""> -->
+          <p v-html="award.win_tips"></p>
+          <!-- <p v-else>优惠券正躺在乐刻APP~我的-优惠券里</p> -->
+          <!-- 实物中奖显示 add-box -->
+          <div class="add-box" v-show="award.type===1">
+            <h6>您本次的奖品将会被发送到:</h6>
+            <div class="has-add" v-show="hasAddress">
+                <div class="top">
+                  <i>@{{address.consignee}}</i>
+                  <b>@{{address.mobile}}</b>
+                </div>
+                <div class="bottom">
+                  <!-- 浙江省杭州市西湖区西溪路550号西溪新座b幢608室 -->
+                  @{{address.province+address.city+address.area+address.village}}
+                </div>
+            </div>
+            <div v-show="!hasAddress">赶紧来填写收获地址~</div>
+            <p v-show="!hasAddress" class="edit-add" @click="openAddress(record_id)"><b></b>添加收货地址</p>
+            <p v-show="hasAddress" class="edit-add" @click="openAddress(record_id)"><b></b>修改收货地址</p>
+          </div>
+
+
+          <div class="close-box">
+              <a class="close" v-show="award.type===1"  href="javascript:;">以后再领</a>
+              <a @click="addAddress" :class="checkCityText" class="close confirm" v-show="award.type===1"  href="javascript:;">确认中奖</a>
+              <a class="close" v-show="award.type!==1"  href="javascript:;">我知道了</a>
+          </div>
+          <!-- <a class="close" href="javascript:;">我知道了</a> -->
+        </div>
+        <!-- <div class="le-popup-colseBtn" @click="colseLotteryPopup"></div> -->
+      </div>
+    </div>
+    <!-- 抽奖记录 -->
+    <div id="draw_record" class="weui-popup-container">
+      <div class="weui-popup-overlay"></div>
+      <div class="weui-popup-modal">
+        <div v-show="awardRecord.length==0" style="margin-top:.3rem;font-size:.14rem;text-align:center;color:rgba(103, 103, 103, 0.8);">
+          暂无抽奖记录!
+        </div>
+        <ul v-show="awardRecord.length>0">
+            <li v-for="list in awardRecord" :key="list.id" >
+              <div class="tit">
+                <strong>@{{list.name}}</strong>
+                <!-- <b>@{{list.status===1 && list.type!=1?'已到帐':'7个工作日内发出'}}</b> -->
+                <b>@{{(list.status==1 && list.type==1)?'已中奖，7工作日内奖品发出':(list.status==0 && list.type==1)?'已中奖，请填写收货地':' 已中奖，24小时之内发到账'}}</b>
+              </div>
+              <p>@{{list.source===1?'周末团课 抽奖':'一周私教 得奖'}} </p>
+              <div v-if="list.type==1  && list.mobile" class="address">
+                <p>@{{list.consignee+' '+list.mobile}} <i>已经确定地址,无法修改</i></p>
+                <p>@{{list.province+list.city+list.area+list.village}}</p>
+              </div>
+              <div v-if="list.type==1  && !list.mobile" class="no-address">
+                <a href="#" @click.prevent="openAddress(list.id)">
+                  填写收货地址
+                </a>
+              </div>
+              <h6>@{{list.created_at}}</h6>
+            </li>
+          <!-- <li>
+            <div class="tit">
+              <strong>现金抵用券5元</strong>
+              <b>已到帐</b>
+            </div>
+            <p>周末团课 抽奖</p>
+            <h6>2016.10.11 10:50</h6>
+          </li>
+          <li>
+            <div class="tit">
+              <strong>全新运动跑步背心</strong>
+              <b>7个工作日内发出</b>
+            </div>
+            <p>周末团课 抽奖</p>
+            <div class="address">
+              <p>阿汪 18099001445 <i>已经安排配送,无法修改</i></p>
+              <p>浙江省杭州市西湖区文一西路522号西溪新座6幢B座乐刻运动</p>
+            </div>
+            <h6>2016.10.11 10:50</h6>
+          </li>
+          <li>
+            <div class="tit">
+              <strong>全新运动跑步背心</strong>
+              <b>已到帐</b>
+            </div>
+            <p>一周私教 得奖</p>
+            <div class="no-address">
+              <a href="javascript:;">
+                填写收货地址
+              </a>
+            </div>
+            <h6>2016.10.11 10:50</h6>
+          </li> -->
+        </ul>
+
+      </div>
+    </div>
+    <div id="record_close" >
+      <a class="close" @click.prevent="closePopup"  href="javascript:;">返回</a>
+    </div>
+  </div>
+  <!-- <div id="alert-err">
+      <div>
+        <h6>提示</h6>
+        <p>请退出本页面，在“我的”页面登录!</p>
+      </div>
+  </div> -->
+  <script src="http://cdn.leoao.com/guagualejquery-1.11.0.min.js"></script>
+  <script src="http://cdn.leoao.com/guagualejquery-weui-0.8.2-jquery-weui.min.js"></script>
+  <script src="http://cdn.leoao.com/guagualejquery-weui-0.8.2-city-picker.min.js"></script>
+   <!-- <script src="//cdn.bootcss.com/vue/1.0.26/vue.min.js"></script> -->
+  <script src="http://cdn.leoao.com/vue.min2.0.3.js"></script>
+  <script src="/front/javascripts/card.js"></script>
+  <!-- <script>$('#scratch-address').popup()</script> -->
+    <script>
+    /* js bridge start */
+
+    function setupWebViewJavascriptBridge(callback) {
+        if (window.LeFitWebViewJavascriptBridge) { return callback(LeFitWebViewJavascriptBridge); }
+        if (window.WVJBCallbacks) { return window.WVJBCallbacks.push(callback); }
+        window.WVJBCallbacks = [callback];
+        var WVJBIframe = document.createElement('iframe');
+        WVJBIframe.style.display = 'none';
+        WVJBIframe.src = 'lefit://__BRIDGE_LOADED__';
+        document.documentElement.appendChild(WVJBIframe);
+        setTimeout(function() { document.documentElement.removeChild(WVJBIframe) }, 0)
+    }
+
+    setupWebViewJavascriptBridge(function(bridge) {})
+
+    function connectWebViewJavascriptBridge(callback) {
+        if (window.LeFitWebViewJavascriptBridge) {
+            callback(LeFitWebViewJavascriptBridge)
+        } else {
+            document.addEventListener('LeFitWebViewJavascriptBridgeReady', function() {
+                callback(LeFitWebViewJavascriptBridge)
+            }, false)
+        }
+    }
+
+    connectWebViewJavascriptBridge(function(bridge) {
+        bridge.init(function(message, responseCallback) {
+
+        })
+    });
+    /* js bridge end */
+  </script>
+  <script src="/front/javascripts/scratch.js"></script>
+  </body>
+  </html>
